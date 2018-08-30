@@ -1,0 +1,62 @@
+format compact
+% Jonathan Tsai
+% 7805
+% Section C1
+% Math 250 MATLAB Lab Demo
+rand('seed',7805)
+% Question 1(a)
+A = [0 1 2 ; 3 4 5]
+A =
+     0     1     2
+     3     4     5
+a=[9;-1]
+a =
+     9
+    -1
+whos
+  Name      Size            Bytes  Class     Attributes
+
+  A         2x3                48  double              
+  a         2x1                16  double              
+
+%Question 1(b)
+a12 = A(1,2)
+a12 =
+     1
+%Question 1(c)
+% The matrix A is not a square matrix, and therefore not a diagonal matrix.
+%Question 1(d)
+D = rdiag(3)
+D =
+     2     0     0
+     0     0     0
+     0     0     8
+% The matrix D is a diagonal matrix because the entries outside of the main diagonal are all zero.
+%Question 1(e)
+23*D
+ans =
+    46     0     0
+     0     0     0
+     0     0   184
+0*D
+ans =
+     0     0     0
+     0     0     0
+     0     0     0
+-17*D
+ans =
+   -34     0     0
+     0     0     0
+     0     0  -136
+(1/10)*D
+ans =
+    0.2000         0         0
+         0         0         0
+         0         0    0.8000
+%Question 1(f)
+% If B is a diagonal matrix, then whenever i is different from j,
+% B(i,j)=0.  Let c be a scalar.  To see that cB is a diagonal matrix,
+% we must check that cB(i,j) = 0 whenever i is different from j. The
+% (i,j) entry of cB is given by c*B(i,j).  Hence if i is different
+% from j, cB(i,j) = c*B(i,j) = c*0 = 0.  Therefore c*B is also a
+% diagonal matrix.

@@ -1,0 +1,398 @@
+% Jonathan Tsai
+% 7805
+% Section C1
+% Math 250 MATLAB Lab Assignment #3
+format compact
+% Question 1
+rand('seed', 7805)
+% Question 1(a)
+A = rand(3), A(1,1), det(A(1:2,1:2)), det(A)
+A =
+    0.2542    0.8320    0.1321
+    0.0757    0.8025    0.4509
+    0.8359    0.5807    0.0189
+ans =
+    0.2542
+ans =
+    0.1411
+ans =
+    0.1669
+U=A
+U =
+    0.2542    0.8320    0.1321
+    0.0757    0.8025    0.4509
+    0.8359    0.5807    0.0189
+col1
+L1 =
+    1.0000         0         0
+   -0.2976    1.0000         0
+   -3.2878         0    1.0000
+U = L1*U
+U =
+    0.2542    0.8320    0.1321
+         0    0.5549    0.4116
+         0   -2.1546   -0.4152
+% The row operations that change the old U into the new U are shown in the m file "col1.m".
+% From the file, we see that row 2 becomes row 2 of the identity matrix subtracted by the multiple
+% (U(2,1)/U(1,1)) multiplied by the first row of the identity matrix. Thus, row 2 becomes 
+% row 2 minus a multiple of row 1. This will result in a 0 in U(2,1). The same elementary row operation
+% is done on row 3, except this time row 3 becomes row 3 subtracted by the multiple of row 1.The 
+% multiple in this situation is U(3,1)/U(1,1) which will result in a zero entry from U(3,1).
+% Question 1(b)
+% Question 1(b)
+col2
+L2 =
+    1.0000         0         0
+         0    1.0000         0
+         0    3.8830    1.0000
+U = L2*U
+U =
+    0.2542    0.8320    0.1321
+         0    0.5549    0.4116
+         0         0    1.1832
+U = L2*L1*A
+U =
+    0.2542    0.8320    0.1321
+         0    0.5549    0.4116
+         0   -0.0000    1.1832
+% The row operations that change the old value of U into the new U are shown in the m file "col2.m".
+% Row 3 becomes row 3 minus row 2 times a multiplier. The multplying value is U(3,2)/U(2,2) 
+% which will result in a desired zero entry in position U(3,2).
+% Question 1(c)
+inv(L1), inv(L2), L = inv(L1)*inv(L2)
+ans =
+    1.0000         0         0
+    0.2976    1.0000   -0.0000
+    3.2878         0    1.0000
+ans =
+    1.0000         0         0
+         0    1.0000         0
+         0   -3.8830    1.0000
+L =
+    1.0000         0         0
+    0.2976    1.0000   -0.0000
+    3.2878   -3.8830    1.0000
+A = L*U
+A =
+    0.2542    0.8320    0.1321
+    0.0757    0.8025    0.4509
+    0.8359    0.5807    0.0189
+% Question 2(a)
+% The formula for inv(L) is L2*L1, since L = inv(L1)*inv(2). Take inverse of both sides and follow inverse identity:
+% L^-1 = (L1^-1 * L2^-1)^-1 = (L2^-1)^-1 * (L1^-1)^-1 = L2*L1.
+inv(L), inv(U)
+ans =
+    1.0000         0         0
+   -0.2976    1.0000    0.0000
+   -4.4435    3.8830    1.0000
+ans =
+    3.9332   -5.8974    1.6128
+         0    1.8022   -0.6270
+         0    0.0000    0.8452
+% Question 2(b)
+b = rvect(3)
+b =
+     8
+     9
+     1
+c = inv(L)*b
+c =
+    8.0000
+    6.6189
+    0.3991
+x = inv(U)*c
+x =
+   -6.9247
+   11.6784
+    0.3373
+A*x
+ans =
+    8.0000
+    9.0000
+    1.0000
+% Question 3
+A = rand(500) ; b = rand(500,1); [L U] = lu(A);
+% Question 3(a)
+tic; R = rref([A b]); y = R(:,501); toc
+Elapsed time is 4.364957 seconds.
+rreftime = 4.364957
+rreftime =
+    4.3650
+% Question 3(b)
+tic; c = inv(L)*b; x = inv(U)*c; toc
+Elapsed time is 0.240341 seconds.
+lutime = 0.240341
+lutime =
+    0.2403
+norm(x - y)
+ans =
+   3.3071e-12
+% Question 3(c)
+% (i) Theoretical ratio is (2cn^3/3)/ 2cn^2 = n/3. So when n = 500, theoretical ratio is 500/3. 
+% (ii)
+rreftime/lutime
+ans =
+   18.1615
+% The observed ratio is 18.1615.
+% Question 4(a)
+a = rmat(4,4)
+a =
+     8     6     9     9
+     9     0     9     4
+     1     2     1     8
+     9     5     9     1
+c = cofactor(a)
+c =
+  394.0000    0.0000 -394.0000    0.0000
+  -33.0000   71.0000   -5.0000  -13.0000
+ -387.0000  -27.0000  407.0000  -45.0000
+ -318.0000  -68.0000  310.0000   18.0000
+a(1,1)*c(1,1) + a(1,2)*c(1,2) + a(1,3)*c(1,3) + a(1,4)*c(1,4)
+ans =
+  -394
+a(2,1)*c(2,1) + a(2,2)*c(2,2) + a(2,3)*c(2,3) + a(2,4)*c(2,4)
+ans =
+ -394.0000
+a(1,3)*c(1,3) + a(2,3)*c(2,3) + a(3,3)*c(3,3) + a(4,3)*c(4,3)
+ans =
+ -394.0000
+a(1,4)*c(1,4) + a(2,4)*c(2,4) + a(3,4)*c(3,4) + a(4,4)*c(4,4)
+ans =
+ -394.0000
+% Theorem 3.1 tells us that the determinant of an nxn matrix can be evaluated using a cofactor expansion along any row.
+% Thus, the first two rows are equal since one represents the cofactor expansion along row 1 and the other represents
+% the cofactor expansion along row 2.
+% Theorem 3.4 states that the determinant of the tranpose of a matrix is equal to the determinant of the original matrix.
+% Because the columns of a matrix are equal to the rows of its transpose, the cofactor expansion along a column of a matrix is
+% equal to the cofactor expansion along the corresponding row of its transpose. 
+det(a)
+ans =
+ -394.0000
+% Question 4(b)
+A = rmat(5,5), U = triu(A)
+A =
+     4     0     7     0     6
+     9     8     3     2     3
+     7     9     6     0     9
+     9     6     1     0     0
+     6     7     7     8     4
+U =
+     4     0     7     0     6
+     0     8     3     2     3
+     0     0     6     0     9
+     0     0     0     0     0
+     0     0     0     0     4
+A(1,1)*A(2,2)*A(3,3)*A(4,4)*A(5,5)
+ans =
+     0
+U(1,1)*U(2,2)*U(3,3)*U(4,4)*U(5,5)
+ans =
+     0
+% You cannot obtain det(A) just by multiplying the diagonal entries. However, matrix U is an upper triangular matrix,
+% and the determinant of an upper or lower traingle matrix IS the product of its diagonal entries.
+det(A)
+ans =
+   2.1060e+03
+det(U)
+ans =
+     0
+% Question 4(c)
+A = rmat(5,5)
+A =
+     3     4     6     9     2
+     7     6     6     3     5
+     7     7     1     5     6
+     1     7     1     2     8
+     4     2     4     7     9
+B = A; B(2,:) = A(1,:); B(1,:) = A(2,:)
+B =
+     7     6     6     3     5
+     3     4     6     9     2
+     7     7     1     5     6
+     1     7     1     2     8
+     4     2     4     7     9
+% Question 4(c)(i)
+% By properties of determinants: if B is obtained by interchanging 2 rows of A then det(B) = -det(A).
+det(A)
+ans =
+  -1.6880e+04
+det(B)
+ans =
+   1.6880e+04
+C = A; C(2,:) = A(2,:) + 10*A(1,:)
+C =
+     3     4     6     9     2
+    37    46    66    93    25
+     7     7     1     5     6
+     1     7     1     2     8
+     4     2     4     7     9
+% Question 4(c)(ii)
+% By properties of determinants: if matrix C is obtained by replacing one row of A by itself plus a multiple of another row,
+% then det(A) = det(C).
+det(A),det(C)
+ans =
+  -1.6880e+04
+ans =
+  -1.6880e+04
+D = A; D(1,:) = 10*A(1,:)
+D =
+    30    40    60    90    20
+     7     6     6     3     5
+     7     7     1     5     6
+     1     7     1     2     8
+     4     2     4     7     9
+% Question 4(c)(iii)
+% By properties of determinants: det(A) = 1/10 * det(D) or det(D) = 10*det(A). 
+% If a matrix is obtained by multiplying a row of A by a k integer then the det of that matrix obtained is
+% equal to k * det(A). Thus, det(10*A) would mean multiplying each row individually by 10, resulting in 10^5 times det(A).
+det(A)
+ans =
+  -1.6880e+04
+det(10*A)
+ans =
+  -1.6880e+09
+% Question 4(d)
+A = rmat(5,5)
+A =
+     5     2     1     8     7
+     1     8     2     5     7
+     1     2     6     5     3
+     2     9     4     9     5
+     8     3     3     2     0
+A(1,1)=0; A(2,1) = 0
+A =
+     0     2     1     8     7
+     0     8     2     5     7
+     1     2     6     5     3
+     2     9     4     9     5
+     8     3     3     2     0
+[P, L, U, sign] = splu(A)
+P =
+     0     0     1     0     0
+     0     1     0     0     0
+     1     0     0     0     0
+     0     0     0     1     0
+     0     0     0     0     1
+L =
+    1.0000         0         0         0         0
+         0    1.0000         0         0         0
+         0    0.2500    1.0000         0         0
+    2.0000    0.6250  -18.5000    1.0000         0
+    8.0000   -1.6250  -83.5000    4.4203    1.0000
+U =
+    1.0000    2.0000    6.0000    5.0000    3.0000
+         0    8.0000    2.0000    5.0000    7.0000
+         0         0    0.5000    6.7500    5.2500
+         0         0         0  120.7500   91.7500
+         0         0         0         0   20.1884
+sign =
+    -1
+P*A, L*U
+ans =
+     1     2     6     5     3
+     0     8     2     5     7
+     0     2     1     8     7
+     2     9     4     9     5
+     8     3     3     2     0
+ans =
+    1.0000    2.0000    6.0000    5.0000    3.0000
+         0    8.0000    2.0000    5.0000    7.0000
+         0    2.0000    1.0000    8.0000    7.0000
+    2.0000    9.0000    4.0000    9.0000    5.0000
+    8.0000    3.0000    3.0000    2.0000         0
+% Question 4(d)(i)
+% det(P) = -1. This is because P represents the identity matrix with row interchanges. Since we needed to interchange
+% row 1 to do the modifications, we get a zero entry in A(1,1). With just one row interchange matrix, we can now
+% have a LU decomposition. Because this is an odd number of interchanges, det(P) = -1.
+% Question 4(d)(ii)
+% det(L) = 1 because L is a lower trianglular matrix with 1s in its diagonal entries. Since the determinant of 
+% an upper or lower triangle matrix is the product of its diagonal entries, det(L) = 1.
+det(L)
+ans =
+    1.0000
+% Question 4(d(iii)
+% det(A) and det(U) are opposites: that is to say, (det(A) = - det(U)). This is because Matrix U is obtained by
+% interchanging one row of Matrix A. By properties of determinants, if Matrix U is obtained by interchanging a row of
+% Matrix A, then det(A) = - det(U).
+det(A),det(U)
+ans =
+  -9.7510e+03
+ans =
+   9.7510e+03
+% Question 5
+H = house; plot2d(H), hold on
+% Question 5(a)
+t = pi/6; Q = [cos(t), -sin(t); sin(t), cos(t)]
+Q =
+    0.8660   -0.5000
+    0.5000    0.8660
+plot2d(Q*H)
+% Question 5(a)(i)
+% The house has rotated counterclockwise by pi/6 radians.
+% Question 5(a)(ii)
+det(Q)
+ans =
+     1
+% The area inside the rotated house is equal to the area of the original house.
+t = -pi/3; Q = [cos(t), -sin(t); sin(t), cos(t)]
+Q =
+    0.5000    0.8660
+   -0.8660    0.5000
+plot2d(Q*H)
+% The house has rotated clockwise by pi/3 radians.
+det(Q)
+ans =
+     1
+% The area inside the rotated house is equal to the area of the original house.
+hold off
+% Question 5(b)
+H = house; plot2d(H), hold on
+r = .9; D = [r, 0; 0, 1/r ]
+D =
+    0.9000         0
+         0    1.1111
+plot2d(D*H)
+hold on
+% Question 5(b)(i)
+% The house became narrower.
+% Question 5(b)(ii)
+det(D)
+ans =
+     1
+% The area inside the transformed house is the same as the area of the original house.
+r = .8; D = [r, 0; 0, 1/r ]
+D =
+    0.8000         0
+         0    1.2500
+plot2d(D*H)
+hold off
+% With r = .8, the house has become even narrower.
+det(D)
+ans =
+     1
+% The area inside the transformed house is still the same as the area of the original house.
+% Question 5(c)
+H = house; plot2d(H), hold on
+t = 1/2; T = [1, t; 0, 1]
+T =
+    1.0000    0.5000
+         0    1.0000
+plot2d(T*H)
+% Question 5(c)(i)
+% Top half of the vertices shifted to the right and bottom half shifted to the left.
+det(T)
+ans =
+     1
+% Question 5(c)(ii)
+% The area inside the transformed house is the same as the area of the original house.
+t = -1/2; T = [1, t; 0, 1]
+T =
+    1.0000   -0.5000
+         0    1.0000
+plot2d(T*H)
+det(T)
+ans =
+     1
+hold off
+% The top half of vertices shifted left and the bottom half shifted right.
+% The area inside the transformed house is the same as the area of the original house.

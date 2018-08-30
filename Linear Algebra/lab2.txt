@@ -1,0 +1,368 @@
+% Jonathan Tsai
+% 7805
+% Section C1
+% Math 250 MATLAB Lab Assignment #2
+format compact
+% Question 1
+rand('seed',7805)
+% Question 1(a)
+A = rmat(3,5), rank(A(:,1:3))
+A =
+     2     8     1     4     1
+     0     8     4     7     7
+     8     5     0     9     6
+ans =
+     3
+% Let's check that columns 1,2,3 of A are the pivot columns:
+rref(A)
+ans =
+    1.0000         0         0    1.1250    1.0461
+         0    1.0000         0         0   -0.4737
+         0         0    1.0000    1.7500    2.6974
+% Therefore the rank of the matrix A, which equals the number of pivot columns, is 3.
+b = rvect(3), R = rref([A b])
+b =
+     7
+     3
+     5
+R =
+    1.0000         0         0    1.1250    1.0461   -0.0329
+         0    1.0000         0         0   -0.4737    1.0526
+         0         0    1.0000    1.7500    2.6974   -1.3553
+S = R(:,1:5)
+S =
+    1.0000         0         0    1.1250    1.0461
+         0    1.0000         0         0   -0.4737
+         0         0    1.0000    1.7500    2.6974
+% Question 1(a)(i)
+% Columns 1,2,3 of S are the pivot columns.
+% Question 1(a)(ii)
+% The rank of R is 3 and the rank of A is 3.
+% Question 1(a)(iii)
+% The nullity of A equals 2 (the number of non-pivot columns). The free variables are x4 and x5.
+% Question 1(a)(iv)
+% The equation Ax = b has a solution because b is a linear combination of the columns of A.
+% Question 1(b)
+c = R(:,6)
+c =
+   -0.0329
+    1.0526
+   -1.3553
+x = [c; 0; 0]
+x =
+   -0.0329
+    1.0526
+   -1.3553
+         0
+         0
+% Question 1(b)(i)
+A*x - b
+ans =
+   1.0e-15 *
+   -0.8882
+   -0.8882
+         0
+S*x - c
+ans =
+     0
+     0
+     0
+% Question 1(b)(ii)
+% Given the linear system Ax = b, it follows that Ax-b = b-b = 0.
+% Because S = rref(A) and x remains the same, then Sx-C will also equal 0.
+% Question 1(c)
+u = [-S(:,4); 1; 0], v = [-S(:,5);0;1]
+u =
+   -1.1250
+         0
+   -1.7500
+    1.0000
+         0
+v =
+   -1.0461
+    0.4737
+   -2.6974
+         0
+    1.0000
+% Question 1(c)(i)
+% From the reduced row echelon form of A, we see that x4 and x5 are free variables, and thus the solutions of Ax=0 are in
+% terms of x4 and x5. Thus the general solution of Ax=0 is x1 = -1.1250*x4 - 1.0461*x5, x2 = 0.4737*x5, 
+% x3 = -1.7500*x4 - 2.6974*x5, x4 = free, x5 = free. The solutions of Ax=0 in vector form yields
+% x4*[-1.1250;0;-1.7500;1.0000;0] + x5*[-1.0461;0.4737;-2.6974;0;1.0000], and thus it is verified that u and v are the
+% vectors that appear in the vector form of Ax=0. We now confirm once more by calculating S*u, A*u, S*v, A*v.
+S*u, A*u, S*v, A*v
+ans =
+     0
+     0
+     0
+ans =
+     0
+     0
+     0
+ans =
+     0
+     0
+     0
+ans =
+     0
+     0
+     0
+s = rand(1), t = rand(1), y = s*u + t*v
+s =
+    0.8147
+t =
+    0.9058
+y =
+   -1.8641
+    0.4291
+   -3.8690
+    0.8147
+    0.9058
+% Question 1(c)(ii)
+% We can ensure that Ay=0 from a combination of two properties of matrix and vector algebra. The first is that 
+% A(su) = s(Au), and thus A(tv) will also equal t(Av). Au = 0 and Av = 0 means that A(su) = 0 and A(tu) = 0.
+% The second is that Av + Au = A(u+v), so A(su) + A(tv) = A((su) + (tv)) which means 0 + 0 = A((su) + (tv)).
+% Therefore, because y = s*u + t*v, Ay must equal 0.
+A*y
+ans =
+   1.0e-14 *
+    0.0111
+    0.1221
+   -0.0222
+% Question 1(d)
+z = x + y
+z =
+   -1.8970
+    1.4817
+   -5.2243
+    0.8147
+    0.9058
+% If z = x + y then Az = A(x+y) = Ax + Ay, based on matrix-vector product properties. Since Ax = b, then Ax = Ax + Ay. 
+% Additionally, Ax + Ay = b + 0 = b.
+A*z - b
+ans =
+   1.0e-14 *
+   -0.1776
+   -0.0888
+   -0.0888
+% Question 2
+u1 = rvect(3), u2 = rvect(3), u3 = rvect(3), u4 = rvect(3)
+u1 =
+     1
+     9
+     6
+u2 =
+     0
+     2
+     5
+u3 =
+     9
+     9
+     1
+u4 =
+     9
+     9
+     4
+% Question 2(a)
+A = [u1 u2 u3], rref(A)
+A =
+     1     0     9
+     9     2     9
+     6     5     1
+ans =
+     1     0     0
+     0     1     0
+     0     0     1
+% Question 2(a)(i)
+% The equation Ax=0 has zero free variables.
+% Question 2(a)(ii)
+% The set is linearly independent because there are no free variables (nullity is zero).
+% Question 2(b)
+B = [u1 u2 u3 u4], rref(B)
+B =
+     1     0     9     9
+     9     2     9     9
+     6     5     1     4
+ans =
+    1.0000         0         0   -0.2126
+         0    1.0000         0    0.8504
+         0         0    1.0000    1.0236
+% Question 2(b)(i)
+% The equation Bx=0 has one free variable.
+% Question 2(b)(ii)
+% The set is linearly dependent because the equation Bx=0 has a free variable (infinite number of solutions).
+% Question 2(c)
+v = rand(1)*u1 + rand(1)*u2
+v =
+    0.8003
+    7.4863
+    5.5111
+% The set U is linearly dependent because v is a linear combination of u1 and u2, so there exists a
+% c1*u1 + c2*u2 +c3*u3 = 0 other than c1=0, c2=0, c3=0.
+U = [u1 u2 v], rref(U)
+U =
+    1.0000         0    0.8003
+    9.0000    2.0000    7.4863
+    6.0000    5.0000    5.5111
+ans =
+    1.0000         0    0.8003
+         0    1.0000    0.1419
+         0         0         0
+% We have now verified through calculation that set U is linearly dependent (we have a free variable).
+% Question 3
+A = rmat(2,3), B = rmat(3, 4), C = rmat(4,3), v = rvect(4)
+A =
+     4     7     6
+     9     9     0
+B =
+     8     7     6     0
+     9     7     1     2
+     6     3     7     0
+C =
+     0     9     7
+     8     0     7
+     6     4     1
+     3     3     4
+v =
+     4
+     6
+     7
+     7
+% Question 3(a)
+u = B*v, A*u, D = A*B, D*v
+u =
+   116
+    99
+    91
+ans =
+        1703
+        1935
+D =
+   131    95    73    14
+   153   126    63    18
+ans =
+        1703
+        1935
+% Question 3(b)
+A = [0 1; 0 0], B = [0 0; 1 0], C = [0 1; 1 0]
+A =
+     0     1
+     0     0
+B =
+     0     0
+     1     0
+C =
+     0     1
+     1     0
+% Question 3(b)(i)
+% A*B is NOT equal to B*A. Additionally,(A+B)^2 is NOT equal to A^2 + 2*A*B + B^2. These claims are shown below.
+A*B
+ans =
+     1     0
+     0     0
+B*A
+ans =
+     0     0
+     0     1
+(A+B)*(A+B)
+ans =
+     1     0
+     0     1
+A*A + 2*A*B + B*B
+ans =
+     2     0
+     0     0
+% Question 3(b)(ii)
+A*A
+ans =
+     0     0
+     0     0
+% If A were a number instead of a matrix, the value of A^2 would be the value of A multiplied by the value of A, which
+% is not a valid conclusion for matrices. A^2 is not equal to the values of the matrix multiplied by themselves. 
+% Question 3(b)(iii)
+A*C
+ans =
+     1     0
+     0     0
+A*B
+ans =
+     1     0
+     0     0
+% If A, B, C were numbers with A not equal to zero, you could conclude that if A*C = A*B, then C = B.
+% However, this conclusion is NOT valid for matrices.
+% Question 4
+A = [0,0,0,1,0,1;1,0,1,1,0,0;0,1,0,1,0,0;1,0,1,0,0,0;1,1,1,0,0,1;0,0,1,1,0,0]
+A =
+     0     0     0     1     0     1
+     1     0     1     1     0     0
+     0     1     0     1     0     0
+     1     0     1     0     0     0
+     1     1     1     0     0     1
+     0     0     1     1     0     0
+% Question 4(i)
+% Image included in lab submission.
+% Question 4(ii)
+% By looking at the directed graph, Person 1 does not have a line coming from Person 3 or Person 6.
+% This means that Person 1 cannot receive a message in only one step from Person 3 or Person 6.
+% Following this reasoning:
+% Person 2 cannot receive messages from Person 1 or Person 4 in one step. 
+% Person 3 cannot receive messages from Person 1 in one step.
+% Person 4 cannot receive messages from Person 5 in one step.
+% Person 5 cannot receive messages from any person in one step. 
+% Person 6 cannot receive messages from Person 2, 3, or 4 in one step.
+% From the matrix: we see that column 1 corresponds to person 1, column 2 corresponds to person 2, etc.
+% Any zeros in the matrix represent not being able to receive messages (in one step) from the corresponding row.
+% For example, if there's a zero in column 1, row 3 then person 1 cannot receive messages from Person 3, in one step. 
+% Question 4(iii)
+A
+A =
+     0     0     0     1     0     1
+     1     0     1     1     0     0
+     0     1     0     1     0     0
+     1     0     1     0     0     0
+     1     1     1     0     0     1
+     0     0     1     1     0     0
+A*A
+ans =
+     1     0     2     1     0     0
+     1     1     1     2     0     1
+     2     0     2     1     0     0
+     0     1     0     2     0     1
+     1     1     2     4     0     1
+     1     1     1     1     0     0
+A*A*A
+ans =
+     1     2     1     3     0     1
+     3     1     4     4     0     1
+     1     2     1     4     0     2
+     3     0     4     2     0     0
+     5     2     6     5     0     1
+     2     1     2     3     0     1
+A*A*A*A
+ans =
+     5     1     6     5     0     1
+     5     4     6     9     0     3
+     6     1     8     6     0     1
+     2     4     2     7     0     3
+     7     6     8    14     0     5
+     4     2     5     6     0     2
+% We are interested in how many ways person 1 can send a message to person 4 in 1,2,3, and 4 stages. 
+% The (1,4) entry of A represents the number of ways that person 1 can send a message to person 4 in one stage,
+% while the (1,4) entry of A^2 represents the number of ways that person 1 can send a message to person 4 in
+% two stages, etc. Therefore:
+% In 1 stage: person 1 can send a message to person 4 in 1 in 1 way.
+% In 2 stages: person 1 can send a message to person 4 in 1 in 1 way.
+% In 3 stages: person 1 can send a message to person 4 in 1 in 3 ways.
+% In 4 stages: person 1 can send a message to person 4 in 1 in 5 ways.
+% Question 4(iv)
+B = A + A*A + A*A*A + A*A*A*A
+B =
+     7     3     9    10     0     3
+    10     6    12    16     0     5
+     9     4    11    12     0     3
+     6     5     7    11     0     4
+    14    10    17    23     0     8
+     7     4     9    11     0     3
+% We are interested in the number of ways in which person 3 can send a message to person 4 in at most
+% 4 stages. Therefore, we are interested in the (3,4) entry of matrix B, which tells us person 3 can send a message
+% to person 4 in 12 ways in at most 4 stages.
